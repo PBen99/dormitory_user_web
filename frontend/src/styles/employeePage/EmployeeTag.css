@@ -1,0 +1,9 @@
+.style-avatar-container {
+  position: relative;
+}
+.style-employee-tag {
+  cursor: pointer;
+}
+.style-employee-tag:hover {
+  box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
+}

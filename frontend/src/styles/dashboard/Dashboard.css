@@ -1,0 +1,22 @@
+.style-summaryFiguresContainer {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  width: 50%;
+}
+.notificationsContainer {
+  background-color: #fff;
+}
+.notificationsContainer i {
+  margin: 10px;
+  font-size: 20px;
+}
+.style-list-notifications {
+  height: 60vh;
+  overflow: auto;
+  text-align: justify;
+}
+.style-notiTitle {
+  font-size: 20px;
+  font-weight: 700;
+}
