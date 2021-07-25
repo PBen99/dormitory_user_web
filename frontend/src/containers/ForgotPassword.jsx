@@ -4,7 +4,7 @@ import FormError from "../components/common/FormError";
 import Button from "../components/common/Button";
 import * as AlertMessage from "../utilities/constants/AlertMessage";
 import { sendEmail } from "../redux/actions/login";
-
+import validate from "../utilities/regex";
 const ForgotPassword = () => {
   const [errorState, setError] = useState({
     email: {
@@ -16,9 +16,9 @@ const ForgotPassword = () => {
   });
 
   const validEmailInput = (checkingValue) => {
-    const regrexPass = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
-    const isValidEmail = regrexPass.exec(checkingValue);
-    if (isValidEmail === null) {
+    const isValidEmail = validate.email(checkingValue);
+
+    if (!isValidEmail) {
       return {
         isEmailInputValid: false,
         isEmailErrorHidden: false,
@@ -34,38 +34,53 @@ const ForgotPassword = () => {
   };
 
   const handleInput = (event) => {
-    const { name, value } = event.target;
+    const { value, name } = event.target;
     const newState = { ...errorState[name] };
     newState.value = value;
     setError({ ...errorState, [name]: newState });
   };
 
-  const submit = (event) => {
-    event.preventDefault();
+  const submit = () => {
+    let valid = validEmailInput(errorState.email.value);
 
-    let { isEmailInputValid, isEmailErrorHidden, emailErrorMessage } =
-      validEmailInput(errorState.email.value);
+    if (valid.isEmailInputValid) {
+      const data = { email: errorState.email.value };
+      sendEmail(data, (output) => {
+        console.log(output);
+        if (output.status) {
+          const newEmailState = { ...errorState.email };
+          newEmailState.isInputValid = true;
+          newEmailState.isHidden = true;
+          newEmailState.errorMessage = AlertMessage.NONE_MESSAGE;
 
-    if (isEmailInputValid) {
-      sendEmail(errorState.email.value, (output) => {
-        if (output) {
-          console.log(output);
+          setError({
+            ...errorState,
+            email: newEmailState,
+          });
+          alert(output.message);
+        } else {
+          const newEmailState = { ...errorState.email };
+          newEmailState.isInputValid = false;
+          newEmailState.isHidden = false;
+          newEmailState.errorMessage = AlertMessage.EMAIL_UNAVAILABLE;
+
+          setError({
+            ...errorState,
+            email: newEmailState,
+          });
         }
       });
-      isEmailInputValid = false;
-      isEmailErrorHidden = false;
-      emailErrorMessage = AlertMessage.EMAIL_UNAVAILABLE;
+    } else {
+      const newEmailState = { ...errorState.email };
+      newEmailState.isInputValid = false;
+      newEmailState.isHidden = false;
+      newEmailState.errorMessage = AlertMessage.EMAIL_UNAVAILABLE;
+
+      setError({
+        ...errorState,
+        email: newEmailState,
+      });
     }
-
-    const newEmailState = { ...errorState.newPass };
-    newEmailState.isInputValid = isEmailInputValid;
-    newEmailState.isHidden = isEmailErrorHidden;
-    newEmailState.errorMessage = emailErrorMessage;
-
-    setError({
-      ...errorState,
-      email: newEmailState,
-    });
   };
   return (
     <div className="login-container">
@@ -75,24 +90,24 @@ const ForgotPassword = () => {
           Bạn hãy nhập vào Email dưới đây. Chúng tôi sẽ gửi cho bạn đường link
           đổi mật khẩu mới.
         </h3>
-        <form>
+        <div>
           <FormError
             isHidden={errorState.email.isHidden}
             errorMessage={errorState.email.errorMessage}
           />
-          <div className="mb-16">
+          <div className="mb-16 pl-48 pr-48">
             <InputField
               type="text"
               isValid={errorState.email.isInputValid}
-              id="email"
               name="email"
               placeholder="Địa chỉ Email"
               autocomplete="off"
               onChange={handleInput}
+              value={errorState.email.value}
             />
           </div>
           <Button type="normal-blue" content="Xác nhận" onClick={submit} />
-        </form>
+        </div>
       </div>
     </div>
   );
