@@ -53,7 +53,6 @@ const Profile = () => {
     const GetProfileUser = () => {
       GetProfile((output) => {
         if (output) {
-          console.log(output);
           setProfile({
             profile: getHandledEmployeeDataRender(output),
             username: output.username,
@@ -176,9 +175,7 @@ const Profile = () => {
                     />
                   </div>
                   <div className="col col-half pt-48 pl-20">
-                    <RoomInfo
-                      room={profileState.room}
-                    />
+                    <RoomInfo room={profileState.room} />
                   </div>
                 </div>
               ) : (
