@@ -56,16 +56,11 @@ const Profile = () => {
           setProfile({
             profile: getHandledEmployeeDataRender(output),
             username: output.username,
-            position: output.profile.position
-              ? output.profile.position.name
-              : null,
-            room: output.room.name ? output.room : null,
-            grade: output.profile.my_class
-              ? output.profile.my_class.name
-              : null,
-            faculty: output.profile.faculty
-              ? output.profile.faculty.name
-              : null,
+            position: output.profile?.position?.name,
+            room: output.room,
+            grade: output.profile?.my_class,
+            faculty: output.profile?.faculty,
+            area: output.profile?.area?.name,
           });
         }
       });

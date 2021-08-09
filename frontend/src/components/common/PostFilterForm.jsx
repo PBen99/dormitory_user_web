@@ -11,8 +11,8 @@ PostFilterForm.defaltProps = {
 };
 
 function PostFilterForm(props) {
-  const { onSubmit } = props;
-  const [searchTerm, setSearchTerm] = useState("");
+  const { onSubmit, value } = props;
+  const [searchTerm, setSearchTerm] = useState(value);
   const typingTimeoutRef = useRef(null);
 
   function handleSearchTermChange(e) {

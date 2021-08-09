@@ -25,6 +25,7 @@ const EmployeePage = () => {
 
   const [filter, setFilter] = useState({
     page: 1,
+    keyword: "",
   });
 
   function handlePageChange(newPage) {
@@ -72,22 +73,24 @@ const EmployeePage = () => {
         ) : (
           <div>
             <div className="col col-full">
-              <PostFilterForm onSubmit={handleFilterChange} />
+              <PostFilterForm
+                onSubmit={handleFilterChange}
+                value={filter.keyword}
+              />
             </div>
             <div>
-              {employeeListState &&
-                employeeListState.results.map((employee, index) => {
-                  return (
-                    <div key={index} className="col col-5 pd-8">
-                      <EmployeeTag
-                        slug={employee.profile.public_id}
-                        name={employee.first_name + " " + employee.last_name}
-                        email={employee.email}
-                        phone={employee.profile.phone}
-                      />
-                    </div>
-                  );
-                })}
+              {employeeListState?.results?.map((employee, index) => {
+                return (
+                  <div key={index} className="col col-5 pd-8">
+                    <EmployeeTag
+                      slug={employee.profile?.public_id}
+                      name={employee.first_name + " " + employee.last_name}
+                      email={employee.email}
+                      phone={employee.profile?.phone}
+                    />
+                  </div>
+                );
+              })}
             </div>
             <div className="col col-full">
               <Pagination

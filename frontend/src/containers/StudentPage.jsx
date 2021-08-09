@@ -27,6 +27,7 @@ const StudentPage = () => {
 
   const [filter, setFilter] = useState({
     page: 1,
+    keyword: "",
   });
 
   function handlePageChange(newPage) {
@@ -55,6 +56,7 @@ const StudentPage = () => {
           totals: output.totals,
         };
         window.scrollTo(0, 0);
+        console.log(output);
         setStudentList(output.results);
         setPagination(pagination);
       }
@@ -70,7 +72,10 @@ const StudentPage = () => {
       ) : (
         <div>
           <div className="col col-full">
-            <PostFilterForm onSubmit={handleFilterChange} />
+            <PostFilterForm
+              onSubmit={handleFilterChange}
+              value={filter.keyword}
+            />
           </div>
           {studentListState && (
             <div>
@@ -101,7 +106,7 @@ const StudentPage = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {studentListState.map((student, index) => {
+                  {studentListState?.map((student, index) => {
                     return (
                       <tr
                         key={index}
@@ -117,13 +122,13 @@ const StudentPage = () => {
                           {student.first_name}
                         </td>
                         <td className="col col-10 text-align-ct bold-text text-14 pl-4 pr-4 pt-16 pb-16">
-                          {student.profile.gender ? "Nam" : "Nữ"}
+                          {student.profile?.gender ? "Nam" : "Nữ"}
                         </td>
                         <td className="col col-4 text-align-ct bold-text text-14 pl-4 pr-4 pt-16 pb-16">
-                          {student.profile.faculty.name}
+                          {student.profile?.faculty?.name}
                         </td>
                         <td className="col col-6 text-align-ct bold-text text-14 pl-4 pr-4 pt-16 pb-16">
-                          {student.profile.my_class.name}
+                          {student.profile?.my_class?.name}
                         </td>
                         <td className="col col-15 text-align-ct bold-text text-20 pl-4 pr-4 pt-16 pb-16">
                           <i
@@ -131,7 +136,7 @@ const StudentPage = () => {
                             style={{ cursor: "pointer" }}
                             onClick={() =>
                               gotoPage(
-                                `${ROUTER.ROUTE_STUDENTS}${ROUTER.ROUTE_DETAILED_STUDENTS}/${student.profile.public_id}`
+                                `${ROUTER.ROUTE_STUDENTS}${ROUTER.ROUTE_DETAILED_STUDENTS}/${student.profile?.public_id}`
                               )
                             }
                           />
