@@ -15,6 +15,7 @@ const DetailedEmployee = () => {
   useEffect(() => {
     getDetailedEmployee(employeeID, (output) => {
       if (output) {
+        console.log(output);
         window.scrollTo(0, 0);
         setEmployee(output);
       }
@@ -34,7 +35,14 @@ const DetailedEmployee = () => {
             <div>
               <div className="col col-third justify-content-ct">
                 <div className="col style-profile-avatar mt-16">
-                  <img src={avatar} alt="avatar" />
+                  <img
+                    src={
+                      employeeState.profile?.avatar
+                        ? employeeState.profile?.avatar
+                        : avatar
+                    }
+                    alt="avatar"
+                  />
                 </div>
               </div>
               <div className="col col-two-third style-lg-box bg-color-white">

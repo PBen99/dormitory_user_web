@@ -16,6 +16,7 @@ const DetailStudent = () => {
   useEffect(() => {
     getDetailedStudent(studentID, (output) => {
       if (output) {
+        console.log(output);
         setStudent(output);
       }
     });
@@ -33,7 +34,14 @@ const DetailStudent = () => {
             <div>
               <div className="col col-third justify-content-ct">
                 <div className="col style-profile-avatar mt-16">
-                  <img src={avatar} alt="avatar" />
+                  <img
+                    src={
+                      studentState.profile.avatar
+                        ? studentState.profile.avatar
+                        : avatar
+                    }
+                    alt="avatar"
+                  />
                 </div>
               </div>
               <div className="col col-two-third style-lg-box bg-color-white">
